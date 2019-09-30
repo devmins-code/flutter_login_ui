@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_signup/bloc/login_bloc.dart';
+import 'package:flutter_login_signup/home_page.dart';
 import 'package:flutter_login_signup/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,10 +20,22 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
+  void navigateToSecondPage(BuildContext context){
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) => HomePage()
+      ));
+    }
+
   @override
   Widget build(BuildContext context) {
     _width = MediaQuery.of(context).size.width;
     _height = MediaQuery.of(context).size.height;
+    print(_height);
+
+    final loginBloc = LoginBloc();
+
+    
+
     return Container(
       child: SingleChildScrollView(
         child: Center(
@@ -44,78 +58,88 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 14, color: Colors.black38),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  decoration: new InputDecoration(
-                    contentPadding: const EdgeInsets.all(16),
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Email",
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    enabledBorder: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                      borderSide: new BorderSide(
-                          color: Colors.white
+              StreamBuilder<String>(
+                stream: loginBloc.email,
+                builder:(context,snapshot) => Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    onChanged: loginBloc.emailChanged,
+                    decoration: new InputDecoration(
+                      contentPadding: const EdgeInsets.all(16),
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: Icon(Icons.email),
+                      hintText: "Email",
+                      errorText: snapshot.error,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      enabledBorder: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                        borderSide: new BorderSide(
+                            color: Colors.white
+                        ),
                       ),
                     ),
-                  ),
-                  validator: (val) {
-                    if (val.length == 0) {
-                      return "Email cannot be empty";
-                    } else if(val.contains('@')){
-                      return "Invalid email address";
-                    }else{
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  style: new TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.blue,
-                      fontSize: 18
+                    validator: (val) {
+                      if (val.length == 0) {
+                        return "Email cannot be empty";
+                      } else if(val.contains('@')){
+                        return "Invalid email address";
+                      }else{
+                        return null;
+                      }
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    style: new TextStyle(
+                        fontFamily: "Poppins",
+                        color: Colors.blue,
+                        fontSize: 18
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  decoration: new InputDecoration(
-                    contentPadding: const EdgeInsets.all(16),
-                    filled: true,
-                    fillColor: Colors.white,
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: "Password",
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                      borderSide: new BorderSide(),
-                    ),
-                    enabledBorder: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                      borderSide: new BorderSide(
-                          color: Colors.white
+              StreamBuilder<String>(
+                stream: loginBloc.password,
+                builder:(context,snapshot)=> Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextFormField(
+                    onChanged: loginBloc.passwordChanged,
+                    decoration: new InputDecoration(
+                      contentPadding: const EdgeInsets.all(16),
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: Icon(Icons.lock),
+                      hintText: "Password",
+                      errorText: snapshot.error,
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      enabledBorder: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                        borderSide: new BorderSide(
+                            color: Colors.white
+                        ),
                       ),
                     ),
-                  ),
-                  validator: (val) {
-                    if (val.length == 0) {
-                      return "Password cannot be empty";
-                    } else if(val.length < 8){
-                      return "Password lenght must be greater than 8 chars";
-                    }else{
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
-                  style: new TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.blue,
-                      fontSize: 18
+                    validator: (val) {
+                      if (val.length == 0) {
+                        return "Password cannot be empty";
+                      } else if(val.length < 8){
+                        return "Password lenght must be greater than 8 chars";
+                      }else{
+                        return null;
+                      }
+                    },
+                    keyboardType: TextInputType.text,
+                    obscureText: true,
+                    style: new TextStyle(
+                        fontFamily: "Poppins",
+                        color: Colors.blue,
+                        fontSize: 18
+                    ),
                   ),
                 ),
               ),
@@ -135,14 +159,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: RaisedButton(
-                  onPressed: () {},
-                  color: Colors.blueAccent,
-                  padding: const EdgeInsets.symmetric(horizontal: 50,vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                  child: Text("LOGIN",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
+              StreamBuilder<bool>(
+                stream: loginBloc.submitCheck,
+                builder:(context,snapshot)=> Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: RaisedButton(
+                    onPressed: snapshot.hasData ? () {
+                      navigateToSecondPage(context);
+                    } : null,
+                    color: Colors.blueAccent,
+                    padding: const EdgeInsets.symmetric(horizontal: 50,vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    child: Text("LOGIN",style: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold),),
+                  ),
                 ),
               ),
               SizedBox(height: 20,),
