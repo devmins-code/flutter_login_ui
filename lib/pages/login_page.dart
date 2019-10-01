@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void navigateToSecondPage(BuildContext context){
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => HomePage()
       ));
     }
@@ -187,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       },
                       color: Colors.blue,
-                      padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: RaisedButton(
                       onPressed: () {},
                       color: Colors.red,
-                      padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 12),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
